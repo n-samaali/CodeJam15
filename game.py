@@ -4,9 +4,8 @@ import Person
 import subprocess
 
 class Game:
-    def __init__(self):
-        pass
-        # self.key = key 
+    def __init__(self, key):
+        self.key = key 
         # self.options = options
         self.person = Person.Person()
         
