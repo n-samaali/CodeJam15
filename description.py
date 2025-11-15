@@ -74,5 +74,5 @@ def card_ascii(rank, suit, width=13, height=7):
 # print(card_ascii("K", "♦"))
 # #"(♣)"
 
-while (True):
-    print(pioche()[0])
+# while (True):
+#     print(pioche()[0])

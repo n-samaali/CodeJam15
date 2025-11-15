@@ -1,7 +1,7 @@
 from google import generativeai as genai
 import re
 
-genai.configure(api_key="AIzaSyDduw3y8iM1vMjR0EGEyfIfp8qE3aj93iE")
+genai.configure(api_key="")
 
 # Create the model
 generation_config = {
@@ -33,7 +33,8 @@ def call_ai(event, prompt=""):
       For each turn, you have to follow the same context (We will feed you back the option that was chosen, but provide answers in a consisten format). Also, the
       character will have hp that will increase or decrease depending on the events. We will also provide the stats, do not assume stats, they will be handled
       programatically, you just have to keep that in mind.
-      also output the dungeon maser prompts in a SEPERATE code block.
+      also output the dungeon maser prompts in a SEPERATE code block. If after I select an action, it results in the player being hurt, you have to give me a marker like Reduce:15 or Increase:20
+      so I know to change the player's hp and format it properly. Do not tell the player about coding things like provide me this and that. Just do what you are told in the prompt.
 
       """
     else:
@@ -57,6 +58,20 @@ def parse_options(markdown_table: str):
         options[option] = desc
 
     return options
+
+def extract_modifier(text: str):
+    """
+    Scans the entire paragraph and finds:
+      - Reduce:X
+      - Increase:X
+    Returns (action, value) or (None, None)
+    """
+    match = re.search(r"(Reduce|Increase)\s*:\s*(\d+)", text, re.IGNORECASE)
+    if match:
+        action = match.group(1).capitalize()
+        value = int(match.group(2))
+        return action, value
+    return None, None
 
 # a = call_ai("")
 # print(parse_options(a))
