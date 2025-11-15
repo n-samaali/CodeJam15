@@ -1,12 +1,12 @@
 import description
-import generator
+from generator import GenAiHandler
 import Person
 import subprocess
 
 class Game:
     def __init__(self, key):
         self.key = key 
-        # self.options = options
+        self.ai_handler = GenAiHandler(self.key)
         self.person = Person.Person()
         
     def get_ram_gb(self):
@@ -38,12 +38,12 @@ class Game:
             
     def start(self, context):
         event = ""
-        a = generator.call_ai(event, context, prompt="")
-        story, table = generator.split_story_and_table(a)
+        a = self.ai_handler.call_ai(event, context, prompt="")
+        story, table = self.ai_handler.split_story_and_table(a)
         print(story)
         # print(table)
         #print(a)
-        self.options = generator.parse_options(table)
+        self.options = self.ai_handler.parse_options(table)
         print(self.options)
         return self.options
         
@@ -51,12 +51,12 @@ class Game:
         print(event[1])#the ascii card
         self.card_verificator(event[0])
         
-        a = generator.call_ai(event[0], self.options[choice])
-        story, table = generator.split_story_and_table(a)
+        a = self.ai_handler.call_ai(event[0], self.options[choice])
+        story, table = self.ai_handler.split_story_and_table(a)
         print(story)
         # print(dm)
         # print(table)
-        hp_stuff = generator.extract_modifier(a)
+        hp_stuff = self.ai_handler.extract_modifier(a)
         
         if hp_stuff[0] is not None:
             action, value = hp_stuff
@@ -69,7 +69,7 @@ class Game:
 
             print("Current HP:", self.person.hp)
     
-        self.options = generator.parse_options(table)
+        self.options = self.ai_handler.parse_options(table)
         print(self.options)
         return self.options
         
