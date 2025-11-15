@@ -1,12 +1,26 @@
+import random
 #coeur, carreau, trefle, pique
 # hearts, diamond, spade, clubs
 description = {"JH":"Checks your PC's RAM. If it's lower or equal to 8GB, the game crashes and Game Over, else the game continues", "QH":"Instant Game Over", "KH": "Adds 50 hp",
-               "JD":"Tells you a joke", "QD":"Gives you a cat and depending on charisma, scratches you or purrs", "KD": "Bloody hell, I am busy streaming, I'll give you 100 subs to leave me alone (+new stats)",
+               "JD":"Tells you a joke", "QD":"Gives you a cat and depending on charisma, scratches you (-10) or purrs (+max_HP 10)", "KD": "Bloody hell, I am busy streaming, I'll give you 100 subs to leave me alone (+new stats)",
                "JS":"I'm Jake! Gives you a quiz on bash and C", "QS":"Randomly does one of the other card's action", "KS":"Takes control of your character and kills you slowly",
                "JC":"Feeling lucky? Pick a number between 1 & 4. One of these numbers is game over, and the other 3 heal you by their number", "QC":"Whats the capital of X? If wrong -15hp, else +15hp", "KC":"You win! Bragging rights because you pulled a card that's as likely to pull as a 3 of heart",
-               "Joker":"you got joker'D/you get a batman joke"}
+               }
 
-def card_ascii(rank, suit, width=11, height=7):
+def pioche():
+    event = ""
+    rank = random.randint(1,13)
+    suit = random.randint(1,4)
+    rank_dictionary = {1:"A", 2:"2", 3:"3", 4:"4", 5:"5", 6:"6", 7:"7", 8:"8", 9:"9", 10:"10", 11:"J", 12:"Q", 13:"K"}
+    suit_dictionary = {1:"♥", 2:"♦", 3:"♠", 4:"♣"}
+    suit_letters = {1:"H", 2:"D", 3:"S", 4:"C"}
+    card_letter = rank_dictionary[rank]+suit_letters[suit]
+    print(card_ascii(rank_dictionary[rank], suit_dictionary[suit]))
+    if card_letter in description:
+        event = description[card_letter]
+    return event
+    
+def card_ascii(rank, suit, width=13, height=7):
     """
     rank: string, e.g. 'A', '10', 'K'
     suit: one-character suit, e.g. '♠', '♥', '♦', '♣'
@@ -52,10 +66,10 @@ def card_ascii(rank, suit, width=11, height=7):
     lines.append(bot)
     return "\n".join(lines)
 
-# quick demo
-print(card_ascii("A", "♠"))
-print()
-print(card_ascii("10", "♥"))
-print()
-print(card_ascii("K", "♦"))
-#"(♣)"
+# # quick demo
+# print(card_ascii("A", "♠"))
+# print()
+# print(card_ascii("10", "♥"))
+# print()
+# print(card_ascii("K", "♦"))
+# #"(♣)"
