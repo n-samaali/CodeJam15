@@ -48,22 +48,35 @@ class Game:
         if key=="QS":
             self.person.increase_dexterity(9)
         if key[0] not in ["K", "Q", "J"]:
-            if (key[0] == "A" and choice=='Strength') or (key[0] <= 3 and choice=='Strength'):
-                self.person.reduce_strength(random.randint(1, 5))
-            elif (key[0] >= 8) and choice=='Strength':
-                self.person.increase_strength(random.randint(1, 5))
-            elif (key[0] == "A" and choice=='Dexterity') or (key[0] <= 3 and choice=='Dexterity'):
-                self.person.reduce_dexterity(random.randint(1, 5))
-            elif (key[0] >= 8) and choice=='Dexterity':
-                self.person.increase_dexterity(random.randint(1, 5))
-            elif (key[0] == "A" and choice=='Intelligence') or (key[0] <= 3 and choice=='Intelligence'):
-                self.person.reduce_intelligence(random.randint(1, 5))
-            elif (key[0] >= 8) and choice=='Intelligence':
-                self.person.increase_intelligence(random.randint(1, 5))
-            elif (key[0] == "A" and choice=='Charisma') or (key[0] <= 3 and choice=='Charisma'):
-                self.person.reduce_charisma(random.randint(1, 5))
-            elif (key[0] >= 8) and choice=='Charisma':
-                self.person.increase_charisma(random.randint(1, 5))
+            rank = key[0]
+
+            # Convert rank to number if possible
+            if rank.isdigit():
+                rank_value = int(rank)
+            else:
+                rank_value = rank  # "A"
+
+            # Mapping attribute names to functions
+            stat_reduce = {
+                "Strength": self.person.reduce_strength,
+                "Dexterity": self.person.reduce_dexterity,
+                "Intelligence": self.person.reduce_intelligence,
+                "Charisma": self.person.reduce_charisma,
+            }
+
+            stat_increase = {
+                "Strength": self.person.increase_strength,
+                "Dexterity": self.person.increase_dexterity,
+                "Intelligence": self.person.increase_intelligence,
+                "Charisma": self.person.increase_charisma,
+            }
+
+            # Determine if it's a decrease or increase
+            if (rank_value == "A" and choice == choice) or (isinstance(rank_value, int) and rank_value <= 3):
+                stat_reduce[choice](random.randint(1, 5))
+
+            elif isinstance(rank_value, int) and rank_value >= 8:
+                stat_increase[choice](random.randint(1, 5))
 
             
     def start(self, context):
