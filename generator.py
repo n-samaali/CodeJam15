@@ -154,6 +154,7 @@ class GenAiHandler:
       import re
       story_match = re.search(r"```(.*?)```", text, re.DOTALL)
       story_text = story_match.group(1).strip() if story_match else ""
+      story_text = re.sub(r"(Reduce|Increase)\s*:\s*\d+", "", story_text, flags=re.IGNORECASE).strip()
 
       remainder = re.sub(r"```.*?```", "", text, flags=re.DOTALL).strip()
       return story_text, remainder
