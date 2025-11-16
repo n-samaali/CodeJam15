@@ -19,7 +19,7 @@ class Game:
         event = description.pioche()
         return event
     
-    def card_verificator(self, event):
+    def card_verificator(self, event, choice):
         key = event.split(":")[0]
         if key=="QH":
             self.person.game_over()
@@ -47,8 +47,24 @@ class Game:
             self.person.reduce_charisma(17)
         if key=="QS":
             self.person.increase_dexterity(9)
-        
-          
+        if key[0] not in ["K", "Q", "J"]:
+            if (key[0] == "A" and choice=='Strength') or (key[0] <= 3 and choice=='Strength'):
+                self.person.reduce_strength(random.randint(1, 5))
+            elif (key[0] >= 8) and choice=='Strength':
+                self.person.increase_strength(random.randint(1, 5))
+            elif (key[0] == "A" and choice=='Dexterity') or (key[0] <= 3 and choice=='Dexterity'):
+                self.person.reduce_dexterity(random.randint(1, 5))
+            elif (key[0] >= 8) and choice=='Dexterity':
+                self.person.increase_dexterity(random.randint(1, 5))
+            elif (key[0] == "A" and choice=='Intelligence') or (key[0] <= 3 and choice=='Intelligence'):
+                self.person.reduce_intelligence(random.randint(1, 5))
+            elif (key[0] >= 8) and choice=='Intelligence':
+                self.person.increase_intelligence(random.randint(1, 5))
+            elif (key[0] == "A" and choice=='Charisma') or (key[0] <= 3 and choice=='Charisma'):
+                self.person.reduce_charisma(random.randint(1, 5))
+            elif (key[0] >= 8) and choice=='Charisma':
+                self.person.increase_charisma(random.randint(1, 5))
+
             
     def start(self, context):
         event = ""
@@ -61,7 +77,7 @@ class Game:
         
     def next_turn(self, choice, event):
         print(event[1])#the ascii card
-        self.card_verificator(event[0])
+        self.card_verificator(event[0], choice)
         a = self.ai_handler.call_ai(event[0], "", self.options[choice])
         story, table = self.ai_handler.split_story_and_table(a)
         print(story)
