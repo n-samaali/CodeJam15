@@ -200,7 +200,7 @@ class UserStats(containers.VerticalGroup) :
             message = f"Your strength increased {strength_factor}%" if strength_factor > 0 else f"Your strength decreased {abs(strength_factor)}%"
             logs.write_action_message("strength", message)
         if dexterity_factor != 0 :
-            message = f"Your dexterity increased {dexterity_factor}%" if dexterity_factor > 0 else f"Your strength decreased {abs(dexterity_factor)}%"
+            message = f"Your dexterity increased {dexterity_factor}%" if dexterity_factor > 0 else f"Your dexterity decreased {abs(dexterity_factor)}%"
             logs.write_action_message("dexterity", message)
         if intelligence_factor != 0 :
             message = f"Your intelligence increased {intelligence_factor}%" if intelligence_factor > 0 else f"Your intelligence decreased {abs(intelligence_factor)}%"
