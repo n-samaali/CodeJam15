@@ -172,7 +172,7 @@ class UserStats(containers.VerticalGroup) :
 
     def update_user_stats(self) :
         
-        logs = self.app.screen.query_one("#dungeon-master")
+        logs = self.app.screen.query_one("#dm-response")
         
         self.app.prev_health = self.app.curr_health
         self.app.prev_strength = self.app.curr_strength
@@ -255,7 +255,9 @@ class Logs(containers.VerticalGroup):
     """
 
     def compose(self) -> ComposeResult:
-        yield RichLog(max_lines=10_000, wrap=True, markup=True)
+        rich_log = RichLog(max_lines=10_000, wrap=True, markup=True)
+        rich_log.can_focus = False
+        yield rich_log
 
     def on_mount(self) -> None:
         pass
@@ -439,7 +441,7 @@ class SidePanel(containers.VerticalGroup) :
 class MainPanel(containers.VerticalGroup) :
     
     DEFAULT_CSS = """
-    #dungeon-master {
+    #dm-response {
         border-title-align: center;
     }
 
@@ -450,8 +452,9 @@ class MainPanel(containers.VerticalGroup) :
     
     def compose(self) -> ComposeResult:
         
-        logs = Logs(id="dungeon-master")
+        logs = Logs(id="dm-response")
         logs.border_title = "Dungeon Master"
+        logs.FOCUS_ON_CLICK = False
         yield logs
         
         actions = ActionButtons(id="action-buttons")
@@ -517,7 +520,7 @@ class MainPanel(containers.VerticalGroup) :
         self.app.current_story = story.split(":")[1]
         self.app.current_option = options
         
-        DM_OUTPUT = self.query_one("#dungeon-master")
+        DM_OUTPUT = self.query_one("#dm-response")
         
         DM_OUTPUT.write_action_message("default", self.app.current_story)
         
@@ -537,7 +540,7 @@ class MainPanel(containers.VerticalGroup) :
         user_stats.update_user_stats()
         
         if self.app.game.person.is_dead == True :
-            logs = self.query_one("#dungeon-master")
+            logs = self.query_one("#dm-response")
             logs.write_action_message("game-over", logs.YOU_DIED_TITLE)
             return
         
@@ -575,7 +578,7 @@ class GameUI(Screen):
         self.app.current_story = game_response[0]
         self.app.current_option = game_response[1]
         
-        DM_OUTPUT = self.query_one("#dungeon-master")
+        DM_OUTPUT = self.query_one("#dm-response")
         
         DM_OUTPUT.write_action_message("default", self.app.current_story)
         
